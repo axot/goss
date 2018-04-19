@@ -307,10 +307,12 @@ func ValidateContains(res ResourceRead, property string, expectedValues []string
 
 	scanner := bufio.NewScanner(fh)
 	var found []patternMatcher
+	var rawfound []string
 	for scanner.Scan() {
 		line := scanner.Text()
 
 		i := 0
+		rawfound = append(rawfound, line)
 		for _, pat := range notfound {
 			if pat.Match(line) {
 				// Found it, but wasn't supposed to, don't mark it as found, but remove it from search
@@ -361,7 +363,7 @@ func ValidateContains(res ResourceRead, property string, expectedValues []string
 			Meta:         meta,
 			Property:     property,
 			Expected:     expectedValues,
-			Found:        patternsToSlice(found),
+			Found:        rawfound,
 			Duration:     time.Now().Sub(startTime),
 		}
 	}
@@ -375,7 +377,7 @@ func ValidateContains(res ResourceRead, property string, expectedValues []string
 		Meta:         meta,
 		Property:     property,
 		Expected:     expectedValues,
-		Found:        patternsToSlice(found),
+		Found:        rawfound,
 		Duration:     time.Now().Sub(startTime),
 	}
 }

@@ -52,9 +52,9 @@ func humanizeResult2(r resource.TestResult) string {
 		case resource.Value:
 			return green("%s: %s: %s: matches expectation: %s", r.ResourceType, r.ResourceId, r.Property, r.Expected)
 		case resource.Values:
-			return green("%s: %s: %s: all expectations found: [%s]", r.ResourceType, r.ResourceId, r.Property, strings.Join(r.Expected, ", "))
+			return green("%s: %s: %s: all expectations found: [%s] raw: [%s]", r.ResourceType, r.ResourceId, r.Property, strings.Join(r.Expected, ", "), strings.Join(r.Found, ", "))
 		case resource.Contains:
-			return green("%s: %s: %s: all expectations found: [%s]", r.ResourceType, r.ResourceId, r.Property, strings.Join(r.Expected, ", "))
+			return green("%s: %s: %s: all expectations found: [%s] raw: [%s]", r.ResourceType, r.ResourceId, r.Property, strings.Join(r.Expected, ", "), strings.Join(r.Found, ", "))
 		default:
 			return red("Unexpected type %d", r.TestType)
 		}
@@ -63,9 +63,9 @@ func humanizeResult2(r resource.TestResult) string {
 		case resource.Value:
 			return red("%s: %s: %s: doesn't match, expect: %s found: %s", r.ResourceType, r.ResourceId, r.Property, r.Expected, r.Found)
 		case resource.Values:
-			return red("%s: %s: %s: expectations not found [%s]", r.ResourceType, r.ResourceId, r.Property, strings.Join(subtractSlice(r.Expected, r.Found), ", "))
+			return red("%s: %s: %s: expectations not found: expect: [%s] found: [%s]", r.ResourceType, r.ResourceId, r.Property, strings.Join(r.Expected, ", "), strings.Join(r.Found, ", "))
 		case resource.Contains:
-			return red("%s: %s: %s: patterns not found: [%s]", r.ResourceType, r.ResourceId, r.Property, strings.Join(subtractSlice(r.Expected, r.Found), ", "))
+			return red("%s: %s: %s: patterns not found: expect: [%s] found: [%s]", r.ResourceType, r.ResourceId, r.Property, strings.Join(r.Expected, ", "), strings.Join(r.Found, ", "))
 		default:
 			return red("Unexpected type %d", r.TestType)
 		}
